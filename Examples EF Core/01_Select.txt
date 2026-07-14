@@ -1,0 +1,17 @@
+using MusteriDbConsoleApp.Data;
+
+using MusteriDbContext context = new MusteriDbContext();
+
+var musteriler = context.Musteriler.ToList(); // Tüm müþterileri veritabanýndan al (SELECT iþlemi)
+
+foreach (var musteri in musteriler)
+{
+    Console.WriteLine($"Müþteri ID: {musteri.CustomerId}, " +
+        $"Ad: {musteri.FirstName} {musteri.LastName}, " +
+        $"Email: {musteri.Email}, " +
+        $"Oluþturulma Tarihi: {musteri.CreatedAt}," +
+        $" Aktif: {musteri.IsActive}");
+}
+
+Console.WriteLine("Kapatmak için Enter'a bas...");
+Console.ReadLine();

@@ -1,0 +1,40 @@
+using Microsoft.Data.SqlClient;
+
+string baglantiMetni =
+    "Server=localhost;Database=MusteriDB;Trusted_Connection=True;TrustServerCertificate=True;";
+
+string sorgu =
+    "SELECT CustomerId, FirstName, LastName, Email FROM Musteriler WHERE CustomerId = @MusteriId";
+
+int musteriId = 1; // Örnek olarak müþteri ID'si 1 olan müþteriyi çekmek için
+
+try
+{
+    using SqlConnection baglanti = new SqlConnection(baglantiMetni);
+
+    baglanti.Open();
+
+    using SqlCommand komut = new SqlCommand(sorgu, baglanti);
+
+    komut.Parameters.AddWithValue("@MusteriId", musteriId);
+
+    using SqlDataReader okuyucu = komut.ExecuteReader();
+
+    while (okuyucu.Read())
+    {
+        Console.WriteLine(
+            okuyucu["CustomerId"] + " - " +
+            okuyucu["FirstName"] + " " +
+            okuyucu["LastName"] + " - " +
+            okuyucu["Email"]
+        );
+    }
+}
+catch (Exception hata)
+{
+    Console.WriteLine("Hata oluþtu:");
+    Console.WriteLine(hata.Message);
+}
+
+Console.WriteLine("Kapatmak için Enter'a bas...");
+Console.ReadLine();

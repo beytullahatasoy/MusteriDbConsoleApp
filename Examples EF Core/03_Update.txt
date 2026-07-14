@@ -1,0 +1,27 @@
+using MusteriDbConsoleApp.Data;
+using MusteriDbConsoleApp.Models;
+
+using MusteriDbContext context = new MusteriDbContext();
+
+var musteri = context.Musteriler
+    .FirstOrDefault(m => m.Email == " hasankuru@gmail.com");
+
+if (musteri == null)
+{
+    Console.WriteLine("Müþteri bulunamadý.");
+}
+else
+{
+    musteri.FirstName = "Ahmet";
+    musteri.LastName = "Yýlmaz";
+    musteri.Email = "musteri_updated@gmail.com";
+
+    int etkilenenSatirSayisi = context.SaveChanges();
+
+    Console.WriteLine(etkilenenSatirSayisi + " satýr güncellendi.");
+    Console.WriteLine("Güncellenen müþteri bilgileri:");
+    Console.WriteLine($"{musteri.CustomerId} - {musteri.FirstName} {musteri.LastName} - {musteri.Email}");
+}
+
+Console.WriteLine("Kapatmak için Enter'a bas...");
+Console.ReadLine();

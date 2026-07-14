@@ -1,0 +1,26 @@
+using MusteriDbConsoleApp.Data;
+using MusteriDbConsoleApp.Models;
+
+using MusteriDbContext context = new MusteriDbContext();
+
+var musteri = context.Musteriler
+    .FirstOrDefault(m => m.Email == "musteri_updated@gmail.com");
+
+if (musteri == null)
+{
+    Console.WriteLine("Müþteri bulunamadý.");
+}
+else
+{
+    Console.WriteLine("Silinecek müþteri bulundu:");
+    Console.WriteLine($"{musteri.CustomerId} - {musteri.FirstName} {musteri.LastName} - {musteri.Email}");
+
+    context.Musteriler.Remove(musteri);
+
+    int etkilenenSatirSayisi = context.SaveChanges();
+
+    Console.WriteLine(etkilenenSatirSayisi + " kayit silindi.");
+}
+
+Console.WriteLine("Kapatmak için Enter'a bas...");
+Console.ReadLine();

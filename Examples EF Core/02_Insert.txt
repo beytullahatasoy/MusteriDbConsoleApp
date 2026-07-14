@@ -1,0 +1,23 @@
+using MusteriDbConsoleApp.Data;
+using MusteriDbConsoleApp.Models;
+
+using MusteriDbContext context = new MusteriDbContext();
+
+Musteri yeniMusteri = new Musteri
+{
+    FirstName = "Hasan",
+    LastName = "Kuru",
+    Email = " hasankuru@gmail.com",
+    CreatedAt = DateTime.Now,
+    IsActive = true,    
+    };
+
+context.Musteriler.Add(yeniMusteri); // Yeni müþteri kaydýný ekle
+
+int eklenenKayitSayisi = context.SaveChanges(); // Deðiþiklikleri veritabanýna kaydet
+
+Console.WriteLine($"{eklenenKayitSayisi} adet kayýt eklendi.");
+Console.WriteLine($"Eklenen müþteri ID: {yeniMusteri.CustomerId}");
+
+Console.WriteLine("Kapatmak için Enter'a bas...");
+Console.ReadLine();

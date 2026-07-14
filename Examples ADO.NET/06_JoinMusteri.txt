@@ -1,0 +1,55 @@
+using Microsoft.Data.SqlClient;
+
+string baglantiMetni =
+    "Server=localhost;Database=MusteriDB;Trusted_Connection=True;TrustServerCertificate=True;";
+
+string sorgu = @"
+
+SELECT
+    m.CustomerId,
+    m.FirstName,
+    m.LastName,
+    m.Email,
+    a.City,
+    a.District,
+    a.AddressText,
+    i.PhoneNumber,
+    i.ContactType
+FROM Musteriler m
+LEFT JOIN MusteriAdresleri a
+ON m.CustomerId = a.CustomerId
+LEFT JOIN MusteriIletisimBilgileri i
+ON m.CustomerId = i.CustomerId
+";
+
+try
+{
+    using SqlConnection baglanti = new SqlConnection(baglantiMetni);
+
+    baglanti.Open();
+
+    using SqlCommand komut = new SqlCommand(sorgu, baglanti);
+
+    using SqlDataReader okuyucu = komut.ExecuteReader();
+
+    while (okuyucu.Read())
+    { 
+    Console.WriteLine(
+        okuyucu["CustomerId"] + "-" +
+        okuyucu["FirstName"] + " " +
+        okuyucu["LastName"] + " - " +
+        okuyucu["Email"] + " - " +
+        okuyucu["City"] + "/" +
+        okuyucu["District"] + " - " +
+        okuyucu["PhoneNumber"]
+        );
+    }
+}
+catch (Exception hata)
+{
+    Console.WriteLine("Hata oluþtu:");
+    Console.WriteLine(hata.Message);
+}
+
+Console.WriteLine("Kapatmak için Enter'a bas...");
+Console.ReadLine();

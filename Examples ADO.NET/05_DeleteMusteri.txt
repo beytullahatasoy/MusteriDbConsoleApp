@@ -1,0 +1,33 @@
+using Microsoft.Data.SqlClient;
+
+string baglantiMetni =
+    "Server=localhost;Database=MusteriDB;Trusted_Connection=True;TrustServerCertificate=True;";
+
+int musteriId = 37;
+
+string sorgu =
+    "DELETE Musteriler WHERE customerId = @MusteriId";
+
+try
+{
+    using SqlConnection baglanti = new SqlConnection(baglantiMetni);
+
+    baglanti.Open();
+
+    using SqlCommand komut = new SqlCommand(sorgu, baglanti);
+
+    komut.Parameters.AddWithValue("@MusteriId", musteriId);
+
+    int etkilenenSatirSayisi = komut.ExecuteNonQuery();
+
+    Console.WriteLine(etkilenenSatirSayisi + " kayit SÝLÝNDÝ");
+
+}
+catch (Exception hata)
+{
+    Console.WriteLine("Hata oluþtu:");
+    Console.WriteLine(hata.Message);
+}
+
+Console.WriteLine("Kapatmak için Enter'a bas...");
+Console.ReadLine();

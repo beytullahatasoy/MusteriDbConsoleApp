@@ -1,0 +1,253 @@
+using Microsoft.Data.SqlClient;
+
+string baglantiMetni =
+    "Server=localhost;Database=MusteriDB;Trusted_Connection=True;TrustServerCertificate=True;";
+
+bool programDevamEdiyor = true;
+
+while (programDevamEdiyor)
+{
+    Console.Clear();
+
+    Console.WriteLine("=== MUSTERI DB CONSOLE APP ===");
+    Console.WriteLine("1 - Musterileri Listele");
+    Console.WriteLine("2 - Musteri Ekle");
+    Console.WriteLine("3 - Musteri Email Guncelle");
+    Console.WriteLine("4 - Musteri Sil");
+    Console.WriteLine("5 - Musteri + Adres + Iletisim Listele");
+    Console.WriteLine("0 - Cikis");
+    Console.WriteLine();
+    Console.Write("Seciminiz: ");
+
+    string secim = Console.ReadLine();
+
+    Console.WriteLine();
+
+    switch (secim)
+    {
+        case "1":
+            MusterileriListele(baglantiMetni);
+            break;
+
+        case "2":
+            MusteriEkle(baglantiMetni);
+            break;
+
+        case "3":
+            MusteriEmailGuncelle(baglantiMetni);
+            break;
+
+        case "4":
+            MusteriSil(baglantiMetni);
+            break;
+
+        case "5":
+            MusteriDetayListele(baglantiMetni);
+            break;
+
+        case "0":
+            programDevamEdiyor = false;
+            Console.WriteLine("Program kapatiliyor...");
+            break;
+
+        default:
+            Console.WriteLine("Gecersiz secim yaptiniz.");
+            break;
+    }
+
+    if (programDevamEdiyor)
+    {
+        Console.WriteLine();
+        Console.WriteLine("Devam etmek icin Enter'a bas...");
+        Console.ReadLine();
+    }
+}
+
+
+void MusterileriListele(string baglantiMetni)
+{
+    string sorgu =
+        "SELECT CustomerId, FirstName, LastName, Email, IsActive, CreatedAt FROM Musteriler";
+
+    try
+    {
+        using SqlConnection baglanti = new SqlConnection(baglantiMetni);
+
+        baglanti.Open();
+
+        using SqlCommand komut = new SqlCommand(sorgu, baglanti);
+
+        using SqlDataReader okuyucu = komut.ExecuteReader();
+
+        while (okuyucu.Read())
+        {
+            Console.WriteLine(
+                okuyucu["CustomerId"] + " - " +
+                okuyucu["FirstName"] + " " +
+                okuyucu["LastName"] + " - " +
+                okuyucu["Email"] + " - Aktif: " +
+                okuyucu["IsActive"]
+            );
+        }
+    }
+    catch (Exception hata)
+    {
+        Console.WriteLine("Hata olustu:");
+        Console.WriteLine(hata.Message);
+    }
+}
+
+
+void MusteriEkle(string baglantiMetni)
+{
+    Console.Write("Ad: ");
+    string ad = Console.ReadLine();
+
+    Console.Write("Soyad: ");
+    string soyad = Console.ReadLine();
+
+    Console.Write("Email: ");
+    string email = Console.ReadLine();
+
+    string sorgu =
+        "INSERT INTO Musteriler (FirstName, LastName, Email) VALUES (@Ad, @Soyad, @Email)";
+
+    try
+    {
+        using SqlConnection baglanti = new SqlConnection(baglantiMetni);
+
+        baglanti.Open();
+
+        using SqlCommand komut = new SqlCommand(sorgu, baglanti);
+
+        komut.Parameters.AddWithValue("@Ad", ad);
+        komut.Parameters.AddWithValue("@Soyad", soyad);
+        komut.Parameters.AddWithValue("@Email", email);
+
+        int etkilenenSatirSayisi = komut.ExecuteNonQuery();
+
+        Console.WriteLine(etkilenenSatirSayisi + " kayit eklendi.");
+    }
+    catch (Exception hata)
+    {
+        Console.WriteLine("Hata olustu:");
+        Console.WriteLine(hata.Message);
+    }
+}
+
+
+void MusteriEmailGuncelle(string baglantiMetni)
+{
+    Console.Write("Guncellenecek Musteri Id: ");
+    int musteriId = Convert.ToInt32(Console.ReadLine());
+
+    Console.Write("Yeni Email: ");
+    string yeniEmail = Console.ReadLine();
+
+    string sorgu =
+        "UPDATE Musteriler SET Email = @YeniEmail WHERE CustomerId = @MusteriId";
+
+    try
+    {
+        using SqlConnection baglanti = new SqlConnection(baglantiMetni);
+
+        baglanti.Open();
+
+        using SqlCommand komut = new SqlCommand(sorgu, baglanti);
+
+        komut.Parameters.AddWithValue("@YeniEmail", yeniEmail);
+        komut.Parameters.AddWithValue("@MusteriId", musteriId);
+
+        int etkilenenSatirSayisi = komut.ExecuteNonQuery();
+
+        Console.WriteLine(etkilenenSatirSayisi + " kayit guncellendi.");
+    }
+    catch (Exception hata)
+    {
+        Console.WriteLine("Hata olustu:");
+        Console.WriteLine(hata.Message);
+    }
+}
+
+
+void MusteriSil(string baglantiMetni)
+{
+    Console.Write("Silinecek Musteri Id: ");
+    int musteriId = Convert.ToInt32(Console.ReadLine());
+
+    string sorgu =
+        "DELETE FROM Musteriler WHERE CustomerId = @MusteriId";
+
+    try
+    {
+        using SqlConnection baglanti = new SqlConnection(baglantiMetni);
+
+        baglanti.Open();
+
+        using SqlCommand komut = new SqlCommand(sorgu, baglanti);
+
+        komut.Parameters.AddWithValue("@MusteriId", musteriId);
+
+        int etkilenenSatirSayisi = komut.ExecuteNonQuery();
+
+        Console.WriteLine(etkilenenSatirSayisi + " kayit silindi.");
+    }
+    catch (Exception hata)
+    {
+        Console.WriteLine("Hata olustu:");
+        Console.WriteLine(hata.Message);
+        Console.WriteLine();
+        Console.WriteLine("Not: Bu musterinin adres veya iletisim kaydi varsa Foreign Key nedeniyle silinmeyebilir.");
+    }
+}
+
+
+void MusteriDetayListele(string baglantiMetni)
+{
+    string sorgu = @"
+SELECT
+    m.CustomerId,
+    m.FirstName,
+    m.LastName,
+    m.Email,
+    a.City,
+    a.District,
+    a.AddressText,
+    i.PhoneNumber,
+    i.ContactType
+FROM Musteriler m
+LEFT JOIN MusteriAdresleri a
+ON m.CustomerId = a.CustomerId
+LEFT JOIN MusteriIletisimBilgileri i
+ON m.CustomerId = i.CustomerId;
+";
+
+    try
+    {
+        using SqlConnection baglanti = new SqlConnection(baglantiMetni);
+
+        baglanti.Open();
+
+        using SqlCommand komut = new SqlCommand(sorgu, baglanti);
+
+        using SqlDataReader okuyucu = komut.ExecuteReader();
+
+        while (okuyucu.Read())
+        {
+            Console.WriteLine(
+                okuyucu["CustomerId"] + " - " +
+                okuyucu["FirstName"] + " " +
+                okuyucu["LastName"] + " - " +
+                okuyucu["Email"] + " - " +
+                okuyucu["City"] + "/" +
+                okuyucu["District"] + " - " +
+                okuyucu["PhoneNumber"]
+            );
+        }
+    }
+    catch (Exception hata)
+    {
+        Console.WriteLine("Hata olustu:");
+        Console.WriteLine(hata.Message);
+    }
+}

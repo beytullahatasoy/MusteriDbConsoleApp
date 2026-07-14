@@ -1,0 +1,35 @@
+using Microsoft.Data.SqlClient;
+
+string baglantiMetni =
+    "Server=localhost;Database=MusteriDB;Trusted_Connection=True;TrustServerCertificate=True;";
+
+int musteriId = 36;
+string yeniEmail = "yeni.email@gmail.com";
+
+string sorgu =
+    "UPDATE Musteriler SET Email= @YeniMail WHERE customerId = @MusteriId";
+
+try
+{
+    using SqlConnection baglanti = new SqlConnection(baglantiMetni);
+
+    baglanti.Open();
+
+    using SqlCommand komut = new SqlCommand(sorgu, baglanti);
+
+    komut.Parameters.AddWithValue("@YeniMail", yeniEmail);
+    komut.Parameters.AddWithValue("@MusteriId", musteriId);
+
+    int etkilenenSatirSayisi = komut.ExecuteNonQuery();
+
+    Console.WriteLine(etkilenenSatirSayisi + " kayit guncellendi");
+
+}
+catch (Exception hata)
+{
+    Console.WriteLine("Hata oluþtu:");
+    Console.WriteLine(hata.Message);
+}
+
+Console.WriteLine("Kapatmak için Enter'a bas...");
+Console.ReadLine();

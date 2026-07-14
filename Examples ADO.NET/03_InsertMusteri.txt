@@ -1,0 +1,37 @@
+using Microsoft.Data.SqlClient;
+
+string baglantiMetni =
+    "Server=localhost;Database=MusteriDB;Trusted_Connection=True;TrustServerCertificate=True;";
+
+string ad = "Ahmet";
+string soyad = "Yilmaz";
+string email = "ahmetdeneme@gmail.com";
+
+string sorgu =
+    "INSERT INTO Musteriler (FirstName, LastName, Email) Values (@Ad, @Soyad, @Email)";
+
+try
+{
+    using SqlConnection baglanti = new SqlConnection(baglantiMetni);
+
+    baglanti.Open();
+
+    using SqlCommand komut = new SqlCommand(sorgu, baglanti);
+
+    komut.Parameters.AddWithValue("@Ad", ad);
+    komut.Parameters.AddWithValue("@Soyad", soyad);
+    komut.Parameters.AddWithValue("@Email", email);
+
+    int etkilenenSatirSayisi = komut.ExecuteNonQuery();
+
+    Console.WriteLine(etkilenenSatirSayisi + " kayit eklendi");
+
+}
+catch (Exception hata)
+{
+    Console.WriteLine("Hata oluþtu:");
+    Console.WriteLine(hata.Message);
+}
+
+Console.WriteLine("Kapatmak için Enter'a bas...");
+Console.ReadLine();

@@ -1,0 +1,23 @@
+﻿using Microsoft.Data.SqlClient;
+
+Console.WriteLine("Musteri DB Console App basladi.");
+
+string baglantiMetni =
+    "Server=localhost;Database=MusteriDB;Trusted_Connection=True;TrustServerCertificate=True;";
+
+try
+{
+    using SqlConnection baglanti = new SqlConnection(baglantiMetni);
+
+    baglanti.Open();
+
+    Console.WriteLine("SQL Server bağlantısı başarılı.");
+}
+catch (Exception ex)
+{
+    Console.WriteLine("Bağlantı hatası:");
+    Console.WriteLine(ex.Message);
+}
+
+Console.WriteLine("Kapatmak için Enter'a bas...");
+Console.ReadLine();
