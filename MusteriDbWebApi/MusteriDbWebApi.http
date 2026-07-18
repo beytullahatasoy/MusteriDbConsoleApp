@@ -1,0 +1,6 @@
+@MusteriDbWebApi_HostAddress = http://localhost:5276
+
+GET {{MusteriDbWebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
