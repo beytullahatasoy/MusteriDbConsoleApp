@@ -16,10 +16,23 @@ public class MusterilerController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<List<Musteri>> MusteriGetir()
+    public ActionResult<List<Musteri>> MusterileriGetir()
     {
-        var musteriler = _musteriServisi.MusteriGetir();
+        var musteriler = _musteriServisi.MusterileriGetir();
 
         return Ok(musteriler);
+    }
+
+    [HttpGet("{musteriId}")]
+    public ActionResult<Musteri> IdIleMusteriGetir(int musteriId)
+    {
+        var musteri = _musteriServisi.IdIleMusteriGetir(musteriId);
+
+        if (musteri == null) 
+        { 
+            return NotFound($"{musteriId} ID degerine sahip musteri bulunamadi.");
+        }
+
+        return Ok(musteri);
     }
 }
