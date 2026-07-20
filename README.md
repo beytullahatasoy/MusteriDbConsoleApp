@@ -13,18 +13,18 @@ This project was developed to learn and practice SQL Server database operations 
 - Swagger (For API testing)
 
 ## Project Structure
-
-The solution contains two separate projects:
-
 ```text
 MusteriDbConsoleApp (Solution)
-├── MusteriDbConsoleApp            # Console project for ADO.NET and EF Core practice
-│   ├── Data, Models, Services     # Database connection and entity models
-│   └── Examples                   # Basic SQL and EF Core code examples
-└── MusteriDbWebApi                # Web API project (Added later)
-    ├── Controllers                # Endpoints handling API requests
-    ├── Data                       # EF Core DbContext class
-    └── Models                     # Entity classes representing database tables
+├── MusteriDbConsoleApp        # Console app for basic ADO.NET / EF Core tests
+│   ├── Data                   # DbContext and connection settings
+│   ├── Models                 # Database Entities
+│   ├── Services               # Business Logic
+│   └── Examples               # Reference code snippets
+└── MusteriDbWebApi            # ASP.NET Core Web API
+    ├── Controllers            # REST API Controllers
+    ├── Data                   # EF Core DbContext
+    ├── Models                 # Entity models for the API
+    └── Services               # API Business Logic
 ```
 
 ## Implemented Features / API Endpoints
