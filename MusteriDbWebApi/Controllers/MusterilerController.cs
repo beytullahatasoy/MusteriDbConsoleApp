@@ -3,6 +3,7 @@ using MusteriDbWebApi.Services;
 using MusteriDbWebApi.Models;
 
 namespace MusteriDbWebApi.Controllers;
+// Dışarıdan gelen HTTP isteklerini karşılamak için kullanılan API controller sınıfı
 
 [ApiController]
 [Route("api/[controller]")]

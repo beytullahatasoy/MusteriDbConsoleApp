@@ -15,6 +15,5 @@ public class Musteri
     public bool IsActive { get; set; }
 
     public List<MusteriAdresi> Adresler { get; set; }
-
     public List<MusteriIletisimBilgisi> IletisimBilgileri { get; set; }
 }

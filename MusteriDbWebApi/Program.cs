@@ -2,24 +2,21 @@ using Microsoft.EntityFrameworkCore;
 using MusteriDbWebApi.Data;
 using MusteriDbWebApi.Services;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args); // Hazýrlýk aþamasýnda WebApplicationBuilder sýnýfýný kullanarak uygulama yapýlandýrmasýný baþlatýyoruz.
 
-builder.Services.AddDbContext<MusteriDbContext>(ayarlar =>
-    ayarlar.UseSqlServer(builder.Configuration.GetConnectionString("MusteriDbBaglantisi")));
+builder.Services.AddDbContext<MusteriDbContext>(ayarlar => // MusteriDbContext sýnýfýný dependency injection (DI) ile ekliyoruz.
+    ayarlar.UseSqlServer(builder.Configuration.GetConnectionString("MusteriDbBaglantisi"))); // Baðlantý stringini appsettings.json dosyasýndan alýyoruz.
 
 // 
-builder.Services.AddScoped<MusteriService>(); // Scoped: Her HTTP isteði için yeni bir servis örneði oluþturur. Bu, genellikle veri tabaný iþlemleri için kullanýlýr, çünkü her istek kendi baðlamýna sahip olmalýdýr.
+builder.Services.AddScoped<MusteriService>(); // Projede MusteriService sýnýfýný kullanabilmek için dependency injection (DI) ile ekliyoruz.
 //
 
-// Add services to the container.
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddControllers(); // API controller'larýný kullanabilmek için gerekli servisleri ekliyoruz.
 builder.Services.AddOpenApi();
 
 
-var app = builder.Build();
+var app = builder.Build(); // Yaptýðýmýz ayarlarý kullanarak api uygulamasýný oluþturuyoruz.
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -29,6 +26,6 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllers(); // Controller’lardaki route’larý dýþarý aç.
 
-app.Run();
+app.Run(); // Uygulamayý baþlatýyoruz ve gelen istekleri dinlemeye baþlýyoruz.

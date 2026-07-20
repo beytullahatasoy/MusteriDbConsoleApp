@@ -2,11 +2,12 @@
 using MusteriDbWebApi.Models;
 
 namespace MusteriDbWebApi.Data;
+// EF Core’un veritabanı ile konuştuğu sınıftır.
+
 public class MusteriDbContext : DbContext // Db Context, EF Core'un hazır DbContext class'ından miras alıyor.
 {   
     // Constructor kısmı:
-    public MusteriDbContext(DbContextOptions <MusteriDbContext> ayarlar) 
-        : base(ayarlar)
+    public MusteriDbContext(DbContextOptions <MusteriDbContext> ayarlar) : base(ayarlar)
     {
     }
 
