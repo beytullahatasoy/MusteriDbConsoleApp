@@ -1,6 +1,10 @@
 @MusteriDbWebApi_HostAddress = http://localhost:5276
 
-GET {{MusteriDbWebApi_HostAddress}}/weatherforecast/
-Accept: application/json
+POST {{MusteriDbWebApi_HostAddress}}/api/musteriler
+Content-Type: application/json
 
-###
+{
+  "firstName": "Api",
+  "lastName": "Test",
+  "email": "api.test@example.com"
+}

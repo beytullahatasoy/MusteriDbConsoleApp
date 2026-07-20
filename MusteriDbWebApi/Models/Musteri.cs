@@ -14,6 +14,6 @@ public class Musteri
     public DateTime CreatedAt { get; set; }
     public bool IsActive { get; set; }
 
-    public List<MusteriAdresi> Adresler { get; set; }
-    public List<MusteriIletisimBilgisi> IletisimBilgileri { get; set; }
+    public List<MusteriAdresi> Adresler { get; set; } = new();
+    public List<MusteriIletisimBilgisi> IletisimBilgileri { get; set; } = new();
 }

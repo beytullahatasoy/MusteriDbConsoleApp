@@ -29,4 +29,15 @@ public class MusteriService
             .Include(musteri => musteri.IletisimBilgileri) // Musteri ile ilişkili iletişim bilgilerini de getirir
             .FirstOrDefault(musteri => musteri.CustomerId == musteriId);
     }
+
+    public Musteri MusteriEkle(Musteri eklenecekMusteri)
+    {
+        eklenecekMusteri.CreatedAt = DateTime.Now;
+        eklenecekMusteri.IsActive = true;
+
+        _veritabani.Musteriler.Add(eklenecekMusteri);
+        _veritabani.SaveChanges();
+
+        return eklenecekMusteri;
+    }
 }

@@ -76,4 +76,11 @@ public class MusterilerController : ControllerBase
 
         return Ok(musteriDetay);
     }
+
+    [HttpPost]
+    public ActionResult<Musteri> MusteriEkle(Musteri eklenecekMusteri)
+    {
+        var eklenenMusteri = _musteriServisi.MusteriEkle(eklenecekMusteri);
+        return CreatedAtAction(nameof(IdIleMusteriGetir), new { musteriId = eklenenMusteri.CustomerId }, eklenenMusteri);
+    }
 }
