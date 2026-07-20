@@ -56,4 +56,18 @@ public class MusteriService
 
         return mevcutMusteri;
     }
+
+    public bool MusteriSil(int musteriId)
+    {
+        var mevcutMusteri = _veritabani.Musteriler.FirstOrDefault(musteri => musteri.CustomerId == musteriId);
+        if (mevcutMusteri == null)
+        {
+            return false;
+        }
+
+        _veritabani.Musteriler.Remove(mevcutMusteri);
+        _veritabani.SaveChanges();
+
+        return true;
+    }
 }

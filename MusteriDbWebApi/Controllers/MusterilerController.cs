@@ -94,4 +94,17 @@ public class MusterilerController : ControllerBase
         }
         return Ok(guncellenenMusteri);
     }
+
+    [HttpDelete("{musteriId}")]
+    public ActionResult MusteriSil(int musteriId)
+    {
+        var silindiMi = _musteriServisi.MusteriSil(musteriId);
+
+        if (silindiMi == false) 
+        { 
+            return NotFound($"{musteriId} ID degerine sahip musteri bulunamadi.");
+        }
+
+        return NoContent();
+    }
 }
