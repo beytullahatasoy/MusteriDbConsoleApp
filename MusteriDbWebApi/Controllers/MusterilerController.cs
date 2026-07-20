@@ -35,4 +35,45 @@ public class MusterilerController : ControllerBase
 
         return Ok(musteri);
     }
+
+    [HttpGet("{musteriId}/detay")]
+    public ActionResult<Musteri> IdIleMusteriDetayGetir(int musteriId)
+    {
+        var musteri = _musteriServisi.IdIleMusteriDetayGetir(musteriId);
+        if (musteri == null) 
+        { 
+            return NotFound($"{musteriId} ID degerine sahip musteri bulunamadi.");
+        }
+
+        var musteriDetay = new 
+        {
+            musteri.CustomerId,
+            musteri.FirstName,
+            musteri.LastName,
+            musteri.Email,
+            musteri.CreatedAt,
+            musteri.IsActive,
+            
+            Adresler = (musteri.Adresler ?? new List<MusteriAdresi>()).Select(adres => new
+            {
+                adres.AddressId,
+                adres.City,
+                adres.District,
+                adres.AddressText,
+                adres.AddressType
+            })
+            .ToList(),
+
+            IletisimBilgileri = (musteri.IletisimBilgileri ?? new List<MusteriIletisimBilgisi>()) 
+            .Select(iletisim => new
+            {
+                iletisim.ContactId,
+                iletisim.PhoneNumber,
+                iletisim.ContactType
+            })
+            .ToList()
+        };
+
+        return Ok(musteriDetay);
+    }
 }
