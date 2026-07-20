@@ -10,34 +10,32 @@ This project was developed to learn and practice SQL Server database operations 
 - ASP.NET Core Web API
 - Microsoft SQL Server
 - ADO.NET & Entity Framework Core
-- Swagger (For API testing)
+- OpenAPI (For API testing)
 
 ## Project Structure
+
+The solution contains two separate projects:
+
 ```text
 MusteriDbConsoleApp (Solution)
-├── MusteriDbConsoleApp        # Console app for basic ADO.NET / EF Core tests
-│   ├── Data                   # DbContext and connection settings
-│   ├── Models                 # Database Entities
-│   ├── Services               # Business Logic
-│   └── Examples               # Reference code snippets
-└── MusteriDbWebApi            # ASP.NET Core Web API
-    ├── Controllers            # REST API Controllers
-    ├── Data                   # EF Core DbContext
-    ├── Models                 # Entity models for the API
-    └── Services               # API Business Logic
+├── MusteriDbConsoleApp            # Console project for ADO.NET and EF Core practice
+│   ├── Data, Models, Services     # Database connection, entity models, and business logic
+│   └── Examples                   # Basic SQL and EF Core code examples
+└── MusteriDbWebApi                # Web API project (Added later)
+    ├── Controllers                # Endpoints handling API requests
+    └── Data, Models, Services     # DbContext, models, and database operations
 ```
 
 ## Implemented Features / API Endpoints
 
-Basic CRUD (Create, Read, Update, Delete) operations were implemented on the Customer (`Musteriler`), Address (`MusteriAdresleri`), and Contact Information (`MusteriIletisimBilgileri`) tables.
+Customer CRUD operations were implemented. Related address and contact information can be retrieved through the customer detail endpoint.
 
-The following endpoints can be tested via the Swagger UI in the Web API:
-
-- `GET /api/musteri` — Retrieves a list of all customers
-- `GET /api/musteri/{id}` — Retrieves a single customer by ID
-- `POST /api/musteri` — Adds a new customer
-- `PUT /api/musteri/{id}` — Updates existing customer information
-- `DELETE /api/musteri/{id}` — Deletes a customer
+- `GET /api/musteriler`
+- `GET /api/musteriler/{musteriId}`
+- `GET /api/musteriler/{musteriId}/detay`
+- `POST /api/musteriler`
+- `PUT /api/musteriler/{musteriId}`
+- `DELETE /api/musteriler/{musteriId}`
 
 ## How to Run
 
@@ -47,4 +45,4 @@ The following endpoints can be tested via the Swagger UI in the Web API:
    - For the API: `appsettings.json` inside the `MusteriDbWebApi` project.
    - For the Console: `Data/MusteriDbContext.cs` inside the `MusteriDbConsoleApp` project.
 4. Right-click the `MusteriDbWebApi` project and select **"Set as Startup Project"**.
-5. Press **F5** to run the project. You can easily test all endpoints from the Swagger screen that opens in your browser.
+5. Press **F5** to run the project. You can test the endpoints using OpenAPI tools or an HTTP client.
