@@ -40,4 +40,20 @@ public class MusteriService
 
         return eklenecekMusteri;
     }
+
+    public Musteri? MusteriGuncelle(int musteriId, Musteri guncellenecekMusteri)
+    {
+        var mevcutMusteri = _veritabani.Musteriler.FirstOrDefault(musteri => musteri.CustomerId == musteriId);
+        if (mevcutMusteri == null)
+        {
+            return null;
+        }
+        mevcutMusteri.FirstName = guncellenecekMusteri.FirstName;
+        mevcutMusteri.LastName = guncellenecekMusteri.LastName;
+        mevcutMusteri.Email = guncellenecekMusteri.Email;
+
+        _veritabani.SaveChanges();
+
+        return mevcutMusteri;
+    }
 }

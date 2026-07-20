@@ -83,4 +83,15 @@ public class MusterilerController : ControllerBase
         var eklenenMusteri = _musteriServisi.MusteriEkle(eklenecekMusteri);
         return CreatedAtAction(nameof(IdIleMusteriGetir), new { musteriId = eklenenMusteri.CustomerId }, eklenenMusteri);
     }
+
+    [HttpPut("{musteriId}")]
+    public ActionResult<Musteri> MusteriGuncelle(int musteriId, Musteri guncellenecekMusteri)
+    {
+        var guncellenenMusteri = _musteriServisi.MusteriGuncelle(musteriId, guncellenecekMusteri);
+        if (guncellenenMusteri == null) 
+        { 
+            return NotFound($"{musteriId} ID degerine sahip musteri bulunamadi.");
+        }
+        return Ok(guncellenenMusteri);
+    }
 }
